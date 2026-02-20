@@ -3,12 +3,12 @@ const mongoose =  require('mongoose')
 const userSchema = new mongoose.Schema({
     username:{
         type:String,
-        unique:[true,'user alrdy exit with username'],
+        unique:[true,'user already exit with username'],
         required:[true,'user name is required']
     },email:{
         type:String,
-        unique:[true,'user alrdy exit with email'],
-       required:[true,'user name is required']
+        unique:[true,'user already exit with email'],
+       required:[true,'user email is required']
     },
     password:{
         type:String,
