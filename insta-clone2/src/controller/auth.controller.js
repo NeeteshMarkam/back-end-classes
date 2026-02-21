@@ -43,7 +43,9 @@ async function RegisterController(req, res) {
     profile:file.url,
   });
 
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+  const token = jwt.sign({ id: user._id,
+    username:user.username
+   }, process.env.JWT_SECRET);
 
   res.cookie("token", token);
 
@@ -79,7 +81,8 @@ const isPasswordMatch =await bcrypt.compare(password,isUserRegister.password)
  }
 
  const token = jwt.sign({
-    id:isUserRegister._id
+    id:isUserRegister._id,
+    username:isUserRegister.username
  },process.env.JWT_SECRET)
 
  res.cookie('token',token)

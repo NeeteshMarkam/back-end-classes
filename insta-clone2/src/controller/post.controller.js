@@ -1,4 +1,4 @@
-require('dotenv').config()
+
 const postModel = require("../model/post.model")
 const ImageKit = require('@imagekit/nodejs')
 const {toFile} = require('@imagekit/nodejs')
