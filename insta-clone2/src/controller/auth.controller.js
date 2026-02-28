@@ -15,7 +15,13 @@ async function RegisterController(req, res) {
 
     console.log(req.body,req.file);
     
-  const { username, email, password, bio, profile } = req.body;
+  const { username, email, password} = req.body;
+
+  let imageBuffer = null;
+
+    if (req.file) {
+      imageBuffer = req.file.buffer;
+    }
 
   const isUserAlreadyExit = await userModel.findOne({
     $or: [{ username }, { email }],
@@ -29,18 +35,21 @@ async function RegisterController(req, res) {
 
   const hash = bcrypt.hashSync(password, 10);
 
-  const file = await imageKit.files.upload({
-     file:await toFile(Buffer.from(req.file.buffer),'file'),
-     fileName:req.file.originalname
 
-  })
+if (req.file) {
+      const uploaded = await imageKit.files.upload({
+        file: await toFile(req.file.buffer, "file"),
+        fileName: req.file.originalname,
+      });
 
+      profileUrl = uploaded.url;
+    }
   const user = await userModel.create({
     username,
     email,
     password: hash,
     bio,
-    profile:file.url,
+    profile:profileUrl,
   });
 
   const token = jwt.sign({ id: user._id,
