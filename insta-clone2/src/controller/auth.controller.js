@@ -103,7 +103,20 @@ const isPasswordMatch =await bcrypt.compare(password,isUserRegister.password)
  })
 }
 
+async function getMe(req,res){
+
+  
+    const userId = req.user.id
+
+    const user = await userModel.findById(userId)
+    res.status(200).json({
+      user
+    })
+}
+
 module.exports = {
   RegisterController,
-  loginController
+  loginController,
+  getMe,
+  
 };
