@@ -1,0 +1,32 @@
+.allpost {
+  border: 1px solid;
+  min-height: 400px;
+  width: 200px;
+  margin-left: 20%;
+  .post {
+    margin-top: 10px;
+    .top {
+      display: flex;
+      padding: 10px;
+      gap: 10px;
+      background-color: rgb(179, 173, 173);
+
+      img {
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+      }
+    }
+    .post-img {
+      display: flex;
+      justify-content: center;
+      img {
+        height: 300px;
+      }
+    }
+    .bottom {
+      background-color: rgb(179, 173, 173);
+     height: 50px;
+    }
+  }
+}

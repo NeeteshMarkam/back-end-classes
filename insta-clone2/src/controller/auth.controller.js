@@ -13,11 +13,12 @@ const imageKit= new ImageKit({
 
 async function RegisterController(req, res) {
 
-    console.log(req.body,req.file);
-    
-  const { username, email, password} = req.body;
+  
+  const { username, email, password,bio} = req.body;
+  console.log(req.body,req.file,bio);
 
   let imageBuffer = null;
+  let profileUrl = null;
 
     if (req.file) {
       imageBuffer = req.file.buffer;
@@ -35,7 +36,6 @@ async function RegisterController(req, res) {
 
   const hash = bcrypt.hashSync(password, 10);
 
-
 if (req.file) {
       const uploaded = await imageKit.files.upload({
         file: await toFile(req.file.buffer, "file"),
@@ -49,7 +49,7 @@ if (req.file) {
     email,
     password: hash,
     bio,
-    profile:profileUrl,
+   // profile:profileUrl,
   });
 
   const token = jwt.sign({ id: user._id,
@@ -73,7 +73,7 @@ if (req.file) {
             {username:username},
             {email:email}
         ]
-    })
+    }).select("+password")
 
     if (!isUserRegister) {
         return res.status(409).json({

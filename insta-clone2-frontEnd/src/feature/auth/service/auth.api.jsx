@@ -40,7 +40,7 @@ export async function login(username,password){
 export async function getMe(email,password){
     
     try {
-        const respone = await api.post('/api/auth/get-me')
+        const respone = await api.post('/get-me')
         return respone.data
         
     } catch (error) {
