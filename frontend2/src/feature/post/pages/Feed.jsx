@@ -1,14 +1,16 @@
 import React from 'react'
-import '../style/posts.css'
+import '../style/feed.scss'
 import Post from '../components/Post'
 const Feed = () => {
     return (
-        <div>
-            <div className="allpost">
-               <Post></Post>
-               <Post></Post>
+        <main className='feed-page'>
+            <div className="feed">
+                <div className="posts">
+
+                   
+                </div>
             </div>
-        </div>
+        </main>
     )
 }
 

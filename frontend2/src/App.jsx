@@ -7,8 +7,11 @@ const App = () => {
   return (
     <div>
       <AuthProvider>
-        <AppRouter />
-        <Feed></Feed>
+
+        <PostContextProvider>
+          <AppRouter />
+        </PostContextProvider>
+
       </AuthProvider>
     </div>
   );
