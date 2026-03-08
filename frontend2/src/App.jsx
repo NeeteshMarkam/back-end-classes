@@ -1,7 +1,8 @@
 import React from "react";
 import AppRouter from "./AppRouter.jsx";
 import { AuthProvider } from "./feature/auth/auth.context";
-import Feed from "./feature/post/pages/Feed.jsx";
+
+import {PostContextProvider} from './feature/post/post.context.jsx'
 
 const App = () => {
   return (
@@ -11,7 +12,6 @@ const App = () => {
         <PostContextProvider>
           <AppRouter />
         </PostContextProvider>
-
       </AuthProvider>
     </div>
   );

@@ -6,6 +6,8 @@ import Home from "./feature/auth/pages/Home";
 import Register from "./feature/auth/pages/Register";
 
 
+import Feed from "./feature/post/pages/Feed.jsx"
+
 
    
 
@@ -15,7 +17,9 @@ const AppRouter = () => {
 
 <BrowserRouter>
     <Routes>
-        <Route path="/" element={<Home></Home>}/>
+        {/* <Route path="/" element={<Home></Home>}/> */}
+        <Route path="/" element={<Feed></Feed>}/>
+
          <Route path="/login" element={<Login></Login>}/>
           <Route path="/register" element={<Register></Register>}/>
     </Routes>
