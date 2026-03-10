@@ -1,7 +1,8 @@
 
 const postModel = require("../model/post.model")
 const ImageKit = require('@imagekit/nodejs')
-const { toFile } = require('@imagekit/nodejs')
+const { toFile } = require('@imagekit/nodejs');
+const likeModel = require("../model/like.model");
 
 const imageKit = new ImageKit({
 
@@ -85,20 +86,45 @@ async function postLike(req, res) {
         })
     }
 
-    const isLiked = post.likes.includes(userId);
+    const like = await likeModel.create({
+        post:postId,
+        user:userId
+    })
 
-    if (isLiked) {
-        post.likes.pull(userId);
-    } else {
-        post.likes.push(userId);
-    }
+    // const isLiked = post.likes.includes(userId);
 
-    await post.save()
+    // if (isLiked) {
+    //     post.likes.pull(userId);
+    // } else {
+    //     post.likes.push(userId);
+    // }
+
+    // await post.save()
 
     res.status(200).json({
-        message: isLiked ? 'post unliked' : 'post liked',
-        likesCount: post.likes.length
+        // message: isLiked ? 'post unliked' : 'post liked',
+        // likesCount: post.likes.length
+
+
+        message:"post liked successfully",
+        like
     })
+}
+async function postUnLike(req, res) {
+
+  const existingLike = await Like.findOne({
+   userId:req.user.id,
+   postId:req.params.postId
+})
+
+if(existingLike){
+   await Like.deleteOne({_id:existingLike._id})
+}else{
+   await Like.create({
+      userId:req.user.id,
+      postId:req.params.postId
+   })
+}
 }
 
 async function feed(req, res) {
@@ -114,5 +140,6 @@ module.exports = {
     getmePost,
     getPostDetailes,
     feed,
-    postLike
+    postLike,
+    postUnLike
 }
