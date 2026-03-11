@@ -7,6 +7,7 @@ import Register from "./feature/auth/pages/Register";
 
 
 import Feed from "./feature/post/pages/Feed.jsx"
+import CreatePost from './feature/post/pages/CreatePost.jsx';
 
 
    
@@ -22,6 +23,8 @@ const AppRouter = () => {
 
          <Route path="/login" element={<Login></Login>}/>
           <Route path="/register" element={<Register></Register>}/>
+          <Route path='/createpost'
+          element={<CreatePost></CreatePost>}/>
     </Routes>
 </BrowserRouter>
         
