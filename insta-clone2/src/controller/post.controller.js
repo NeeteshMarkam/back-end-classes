@@ -112,12 +112,18 @@ async function postLike(req, res) {
 }
 async function postUnLike(req, res) {
 
-  const existingLike = await Like.findOne({
+  const isLiked = await Like.findOne({
    userId:req.user.id,
    postId:req.params.postId
 })
 
-if(existingLike){
+if (!isLiked) {
+    res.status(200).json({
+        message:"post didn't like"
+    })
+}
+
+if(isLiked){
    await Like.deleteOne({_id:existingLike._id})
 }else{
    await Like.create({
@@ -125,6 +131,10 @@ if(existingLike){
       postId:req.params.postId
    })
 }
+
+return res.status(200).json({
+    meassage:"post unliked successfully"
+})
 }
 
 async function feed(req, res) {

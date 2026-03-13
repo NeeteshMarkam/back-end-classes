@@ -24,18 +24,29 @@ const Login = () => {
   }
   return (
     <div>
-      <main>
-        <form onSubmit={handleSubmit}>
+      <main className="flex flex-col justify-center items-center">
+        <h1 className="text-2xl font-bold">login page</h1>
+        <form onSubmit={handleSubmit}
+        className="flex flex-col items-center justify-center mt-4
+        bg-red-500 p-6 w-60
+        rounded-xl h-80
+        "
+        >
           <input
+          className="border-2 rounded-xl
+          p-2 mb-4
+          text-white-900"
             onChange={(e) => {
               setUsername(e.target.value);
             }}
             type="text"
             name="username"
             id="username"
+        
             placeholder="enter Username"
           />
           <input
+          className="border-2 rounded-xl p-2 mb-4"
             onChange={(e) => {
               setPassword(e.target.value);
             }}
@@ -45,7 +56,7 @@ const Login = () => {
             placeholder="enter password"
           />
 
-          <button>sumit</button>
+          <button className="border px-2 rounded bg-green-500">sumit</button>
         </form>
       </main>
     </div>

@@ -49,7 +49,7 @@ if (req.file) {
     email,
     password: hash,
     bio,
-   // profile:profileUrl,
+    profile:profileUrl,
   });
 
   const token = jwt.sign({ id: user._id,

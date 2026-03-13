@@ -65,7 +65,32 @@ res.status(200).json({
 
 }
 
+async function allFollowing(req,res) {
+  const user = req.user.username
+
+  const allFollowing = await followModel.find({
+    follower:user
+
+    // user kis kis ko follow karta hai ka code
+  }).select('following -_id')
+
+  const allFollower = await followModel.find({
+    following:user
+
+    // user ko kon kon follow karte hai
+  }
+  ).select('follower -_id')
+
+  return res.status(200).json({
+ message:'who login is '+user,
+    allFollowing, 
+    allFollower
+  })
+  
+}
+
 module.exports = {
   followUserController,
-  unfollowUserController
+  unfollowUserController,
+  allFollowing
 };
