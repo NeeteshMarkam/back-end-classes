@@ -7,6 +7,6 @@ userRouter.post('/follow/:username',idetifyuser,userFollowController.followUserC
 userRouter.post('/unfollow/:username',idetifyuser,userFollowController.unfollowUserController)
 
 
-userRouter.get('/allFollowing',idetifyuser,userFollowController.allFollowing)
+userRouter.get('/suggestedUsers',idetifyuser,userFollowController.suggestedUsers)
 
 module.exports= userRouter

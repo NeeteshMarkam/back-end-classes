@@ -12,11 +12,11 @@ async function followUserController(req, res) {
   }
 
   const isFolloweeExit = await userModel.findOne({
-   username:followeeUsername,
+    username: followeeUsername,
   });
   if (!isFolloweeExit) {
     return res.status(200).json({
-        message:"this user is not exits"
+      message: "this user is not exits"
     })
   }
 
@@ -27,8 +27,8 @@ async function followUserController(req, res) {
 
   if (isAlreadyFollowing) {
     return res.status(200).json({
-      message: `"you are already following" ${ followeeUsername }`,
-      follow:isAlreadyFollowing
+      message: `"you are already following" ${followeeUsername}`,
+      follow: isAlreadyFollowing
     });
   }
   const followRecode = await followModel.create({
@@ -42,55 +42,69 @@ async function followUserController(req, res) {
   });
 }
 
-async function unfollowUserController(req,res){
+async function unfollowUserController(req, res) {
 
-    const followerUsername = req.user.username
-    const followeeUsername = req.params.username
+  const followerUsername = req.user.username
+  const followeeUsername = req.params.username
 
-const isFollowingUser = await followModel.findOne({
-    follower:followerUsername,
-    following:followeeUsername
-})
-if (!isFollowingUser) {
+  const isFollowingUser = await followModel.findOne({
+    follower: followerUsername,
+    following: followeeUsername
+  })
+  if (!isFollowingUser) {
     return res.status(200).json({
-        message:`you are not following ${followeeUsername}`
+      message: `you are not following ${followeeUsername}`
     })
+  }
+
+  await followModel.findByIdAndDelete(isFollowingUser._id)
+  res.status(200).json({
+    message: `you have unfollowed ${followeeUsername}`
+  })
+
+
 }
 
-await followModel.findByIdAndDelete(isFollowingUser._id)
-res.status(200).json({
-    message:`you have unfollowed ${followeeUsername}`
-})
+async function suggestedUsers(req, res) {
+  const currentUser = req.user.username
 
-
-}
-
-async function allFollowing(req,res) {
-  const user = req.user.username
-
-  const allFollowing = await followModel.find({
-    follower:user
-
+  const allFollowinguser = await followModel.find({
+    follower: currentUser
     // user kis kis ko follow karta hai ka code
   }).select('following -_id')
 
-  const allFollower = await followModel.find({
-    following:user
+  const followerDocs = await followModel.find({
+    following: currentUser
 
-    // user ko kon kon follow karte hai
-  }
-  ).select('follower -_id')
+    // user ko kon kon follow kar raha hai
+  }).select('follower -_id')
 
-  return res.status(200).json({
- message:'who login is '+user,
-    allFollowing, 
-    allFollower
+
+
+  const followingUsernames = allFollowinguser.map((val) => {
+    return (val.following)
   })
-  
+
+  const otherUser = await userModel.find({
+    username: { $nin: [...followingUsernames, currentUser] }
+  }).select('username profile')
+
+
+  res.status(200).json({
+    
+    message: 'who login is ' + currentUser,
+    allFollowinguser,
+    followingDocs: followerDocs,
+    otherUser
+  })
+
+
+
+
 }
 
 module.exports = {
   followUserController,
   unfollowUserController,
-  allFollowing
+  suggestedUsers
 };
