@@ -98,9 +98,19 @@ async function login(req, res) {
 
 }
 
+async function getMe(req,res) {
+    const Username = req.user.username
+    console.log(Username)
+
+  const details =  await userModel.findOne({username:Username})
+res.status(200).json({
+
+})
+}
 
 
 module.exports = {
     register,
-    login
+    login,
+    getMe
 }
