@@ -1,4 +1,4 @@
-const userModel = require("../model/usersModels")
+const userModel = require("../models/usersModel")
 
 const bcryptjs = require('bcryptjs')
 
@@ -57,55 +57,79 @@ async function register(req, res) {
 
 }
 async function login(req, res) {
+  try {
+    console.log(req.body)
 
     const { email, username, password } = req.body;
 
     const user = await userModel.findOne({
-        $or: [{
-            email
-        }, { username }]
+      $or: [{ email }, { username }]
     }).select('+password')
 
     if (!user) {
-        return res.status(404).json({
-            message: 'user not found'
-        })
+      return res.status(404).json({
+        message: 'user not found'
+      })
     }
 
     const isPasswordMatch = await bcryptjs.compare(password, user.password)
 
     if (!isPasswordMatch) {
-        return res.status(401).json({
-            message: "invalid passwod"
-        })
+      return res.status(401).json({
+        message: "invalid password"
+      })
     }
 
     const token = jwt.sign({
-        id: user._id,
-        username: user.username
-    },
-        process.env.JWT_SECRET)
+      id: user._id,
+      username: user.username
+    }, process.env.JWT_SECRET)
 
-    res.cookie("token", token)
-
-
-    res.status(200).json({
-        message: 'user is succesfully login',
-        username: user.username,
-        email: user.email
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax"
     })
 
+    return res.status(200).json({
+      message: 'user is successfully login',
+      user: {
+        username: user.username,
+        email: user.email
+      }
+    })
 
+  } catch (error) {
+    console.log(error)
+
+    return res.status(500).json({
+      message: "server error"
+    })
+  }
 }
 
-async function getMe(req,res) {
-    const Username = req.user.username
-    console.log(Username)
+async function getMe(req, res) {
+  try {
+    const username = req.user.username
 
-  const details =  await userModel.findOne({username:Username})
-res.status(200).json({
+    const details = await userModel.findOne({ username })
 
-})
+    if (!details) {
+      return res.status(404).json({
+        message: "User not found"
+      })
+    }
+
+    return res.status(200).json({
+      user: details
+    })
+
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({
+      message: "Server error"
+    })
+  }
 }
 
 
